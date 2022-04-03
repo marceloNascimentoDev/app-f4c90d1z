@@ -41,4 +41,30 @@ class ProductController extends Controller
             return Response()->json(['data' => '', 'success' => false], 500);
         }
     }
+
+    public function operation(Request $request)
+    {
+        if(!$product = $this->ProductService->findBySku($request->get('sku'))) {
+            return Response()->json(['data' => 'SKU not find', 'success' => false], 422);
+        }
+
+        if(!$product->canUpdateAmount($request['amount'])) {
+            return Response()->json(['data' => 'invalid operation', 'success' => false], 422);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $product = $this->ProductService->operation($request->all());
+
+            DB::commit();
+
+            return Response()->json([
+                'data'    => ProductResource::make($product),
+                'success' => true
+            ], 200);
+        } catch (\Throwable $th) {
+            return Response()->json(['data' => '', 'success' => false], 500);
+        }
+    }
 }

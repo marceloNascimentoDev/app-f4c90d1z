@@ -21,6 +21,16 @@ class ProductService {
         }
     }
 
+    public function operation(Array $data) {
+        try {
+            $product = $this->productMovement($data);
+
+            return $product;
+        } catch (\Exception $th) {
+            throw $th;
+        }
+    }
+
     public function findBySku(String $sku) {
         $product =$this->ProductRepository->where([['sku', '=', $sku]]);
 
@@ -29,5 +39,16 @@ class ProductService {
         }
 
         return null;
+    }
+
+    public function productMovement(Array $data): Object
+    {
+        $product = $this->findBySku($data['sku']);
+
+        $updates = ['amount' => $product->amount += $data['amount']];
+
+        $product = $this->ProductRepository->update($product->id, $updates);
+
+        return $product;
     }
 }

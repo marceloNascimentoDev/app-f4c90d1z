@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('product', 'ProductController@store');
+Route::post('product-operation', 'ProductController@operation');
