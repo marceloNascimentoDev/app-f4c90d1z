@@ -3,14 +3,18 @@
 namespace app\Services;
 
 use App\Repositories\ProductRepository;
+use App\Services\ProductHistoryService;
 
 class ProductService {
     protected $ProductRepository;
+    protected $ProductHistoryService;
 
     public function __construct(
-        ProductRepository $ProductRepository
+        ProductRepository $ProductRepository,
+        ProductHistoryService $ProductHistoryService
     ) {
         $this->ProductRepository = $ProductRepository;
+        $this->ProductHistoryService = $ProductHistoryService;
     }
 
     public function store(Array $data) {
@@ -24,6 +28,8 @@ class ProductService {
     public function operation(Array $data) {
         try {
             $product = $this->productMovement($data);
+
+            $this->ProductHistoryService->register($product, $data);
 
             return $product;
         } catch (\Exception $th) {
