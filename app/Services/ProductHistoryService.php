@@ -27,4 +27,15 @@ class ProductHistoryService {
 
         return $history;
     }
+
+    public function getFilteredList(Array $filters = [])
+    {
+        $history = $this->ProductHistoryRepository->getAll();
+
+        if(isset($filters['product_id'])) {
+            $history = $history->where('product_id', $filters['product_id']);
+        } 
+        
+        return $history;
+    }
 }
