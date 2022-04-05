@@ -9,6 +9,7 @@ use App\Services\ProductService;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductStoreRequest;
 use Illuminate\Http\JsonResponse;
+use App\Enums\StatusCode;
 
 class ProductController extends Controller
 {
@@ -25,7 +26,7 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         if($this->ProductService->findBySku($request->get('sku'))) {
-            return Response()->json(['data' => 'SKU has already been registered', 'success' => false], 422);
+            return Response()->json(['data' => 'SKU has already been registered', 'success' => false], StatusCode::UNPROCESSABLE_CONTENT);
         }
 
         try {
@@ -36,20 +37,20 @@ class ProductController extends Controller
             return Response()->json([
                 'data'    => ProductResource::make($product),
                 'success' => true
-            ], 200);
+            ], StatusCode::SUCCESS);
         } catch (\Exception $th) {
-            return Response()->json(['data' => '', 'success' => false], 500);
+            return Response()->json(['data' => '', 'success' => false], StatusCode::ERROR);
         }
     }
 
     public function operation(Request $request)
     {
         if(!$product = $this->ProductService->findBySku($request->get('sku'))) {
-            return Response()->json(['data' => 'SKU not find', 'success' => false], 422);
+            return Response()->json(['data' => 'SKU not find', 'success' => false], StatusCode::UNPROCESSABLE_CONTENT);
         }
 
         if(!$product->canUpdateAmount($request['amount'])) {
-            return Response()->json(['data' => 'invalid operation', 'success' => false], 422);
+            return Response()->json(['data' => 'invalid operation', 'success' => false], StatusCode::UNPROCESSABLE_CONTENT);
         }
 
         DB::beginTransaction();
@@ -62,9 +63,9 @@ class ProductController extends Controller
             return Response()->json([
                 'data'    => ProductResource::make($product),
                 'success' => true
-            ], 200);
+            ], StatusCode::SUCCESS);
         } catch (\Throwable $th) {
-            return Response()->json(['data' => '', 'success' => false], 500);
+            return Response()->json(['data' => '', 'success' => false], StatusCode::ERROR);
         }
     }
 }

@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return json_encode('API AppMax V1.0.0');
+});
+
 Route::post('product', 'ProductController@store');
 Route::post('product-operation', 'ProductController@operation');
 Route::get('history', 'HistoryController@index');

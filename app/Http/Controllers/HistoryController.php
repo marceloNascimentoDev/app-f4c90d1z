@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\ProductHistoryService;
 use App\Http\Resources\HistoryResource;
+use App\Enums\StatusCode;
 
 class HistoryController extends Controller
 {
@@ -25,9 +26,9 @@ class HistoryController extends Controller
             return Response()->json([
                 'data'    => HistoryResource::collection($history),
                 'success' => true
-            ], 200);
+            ], StatusCode::SUCCESS);
         } catch (\Throwable $th) {
-            return Response()->json(['data' => '', 'success' => false], 500);
+            return Response()->json(['data' => '', 'success' => false], StatusCode::ERROR);
         }
     }
 }
