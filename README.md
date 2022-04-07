@@ -2,6 +2,8 @@
 
 Este é um projeto em PHP desenvolvido utilizando o framework Laravel 7 utilizando o padrão MVC e php 7.4.
 
+##### Documentação da API: https://documenter.getpostman.com/view/14447906/UVyxNsqN
+
 ## O Desafio
 
 #### Requisitos
