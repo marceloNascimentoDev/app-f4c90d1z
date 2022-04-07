@@ -63,8 +63,8 @@ docker-compose up -d
 
 ```
 cp .env.example .env
-docker exec $(docker ps -aqf "name=app") php artisan migrate --seed --force
 docker exec $(docker ps -aqf "name=app") composer install
+docker exec $(docker ps -aqf "name=app") php artisan migrate --seed --force
 docker exec $(docker ps -aqf "name=app") chmod -R 777 storage bootstrap/cache
 ```
 
