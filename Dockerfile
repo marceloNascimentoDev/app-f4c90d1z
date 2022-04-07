@@ -1,6 +1,6 @@
 FROM wyveo/nginx-php-fpm:php74
 
-RUN apt-get update
+RUN apt-get update && apt-get install curl -y
 
 WORKDIR /usr/share/nginx/
 
