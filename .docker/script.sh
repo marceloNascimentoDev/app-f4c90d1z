@@ -9,8 +9,8 @@ cp .env.example .env
 printf "\n"
 
 echo "[-] Setup Database [-]"
-docker exec $APP_CONTAINER_ID php artisan migrate --seed --force
 docker exec $APP_CONTAINER_ID composer install
+docker exec $APP_CONTAINER_ID php artisan migrate --seed --force
 printf "\n"
 
 echo "[-] Change permissions [-]"
