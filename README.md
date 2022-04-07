@@ -1,61 +1,69 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Signo
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Este é um projeto em PHP desenvolvido utilizando o framework Laravel 7 utilizando o padrão MVC e php 7.4.
 
-## About Laravel
+## O Desafio
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+#### Requisitos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Criar uma API Rest para realizar as seguintes ações:
+    ### Cadastro de produtos com os seguintes campos obrigatórios:
+        - Nome
+        - SKU
+        - Quantidade Inicial
+    
+    ### Movimentação de produtos
+        - SKU
+        - Quantidade (para adicionar ou remover)
+    
+    ### Histórico
+        - Precisa retornar um json com uma lista das movimentações realizadas
+        - sku
+        - quantidade (adicionada ou removida)
+        - data/hora (que ocorreu a movimentação)
+    
+    ### O repositório deverá ter no mínimo 3 commits (pode ser 1 para cada construção de endpoint)
+    
+    ### No commit precisa estar bem descrito o que foi implementado/entregue
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<br>
 
-## Learning Laravel
+## A solução
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### Como rodar o projeto
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Antes de seguir os passos abaixo tenha certeza que o docker e docker-compose estão instalados na maquina. Para rodar este projeto:**
 
-## Laravel Sponsors
+1\. Clone este repositorio  e entre na pasta
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```
+git clone https://github.com/marceloNascimentoDev/app-f4c90d1z.git
+cd app-f4c90d1z
+```
 
-### Premium Partners
+2\. O arquivo de configurações é o \.env (Já está configurado)\.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+3\. Faça o build dos containers \, o container **app** vai usar a porta 8001 e o container **db** irá usar a porta 8306, certifique-se que essas portas estejam livres antes de continuar. Se seu usuário não estiver incluido no grupo de permissões do **docker e docker-compose**  será necessário executar os comandos como administrador (sudo)
 
-## Contributing
+```
+docker-compose up -d
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4\. Caso esteja utilizando Linux basta rodar o script de configuração dentro da pasta do projeto que tudo será feito automaticamente
 
-## Code of Conduct
+```
+.docker/script.sh
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+<br>
 
-## Security Vulnerabilities
+5\. Caso não esteja utilizando linux basta rodar os seguintes scripts na pasta do projeto.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+cp .env.example .env
+docker exec $(docker ps -aqf "name=app") php artisan migrate --seed --force
+docker exec $(docker ps -aqf "name=app") composer install
+docker exec $(docker ps -aqf "name=app") chmod -R 777 storage bootstrap/cache
+```
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+6\. Agora você pode acessar aplicação em [localhost ou clique aqui!](http://localhost:8001)
